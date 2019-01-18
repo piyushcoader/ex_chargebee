@@ -6,7 +6,7 @@ defmodule ChargeBee.Endpoint do
   @site Application.get_env(:ex_chargebee, :site)
 
 
-  def request( method \\ :post , url_suffix , params \\ []) do
+  def request(params \\ %{} , method \\ :post , url_suffix) do
 
     url = "#{@options.protocol}://#{@site}#{@options.host_suffix}#{@options.api_path}#{url_suffix}"
 
