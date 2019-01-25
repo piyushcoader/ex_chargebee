@@ -1,4 +1,4 @@
 use Mix.Config
 config :ex_chargebee,
-  site: "elixir-test",
-  api_key: "test_oLK902oNcdXErG2PjFW66TQVIY6VMPcu34"
+  site: System.get_env("CHARGEBEE_SITE"),
+  api_key: System.get_env("CHARGEBEE_API_KEY")

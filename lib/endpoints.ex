@@ -1,15 +1,12 @@
 defmodule ChargeBee.Endpoint do
   @options %{ protocol: "https", host_suffix: ".chargebee.com", api_path: "api/v2", timeout: 40_000, version: 'v2.4.7', port: 443}
 
-  @api_key Application.get_env(:ex_chargebee, :api_key)
-  @site Application.get_env(:ex_chargebee, :site)
-
-
   def request(params \\ [] , url_suffix ,  method \\ :post) do
 
-    url = "https://#{@site}.chargebee.com/#{@options.api_path}#{url_suffix}"
-    token = :base64.encode("#{@api_key}:")
+    url = "https://#{site()}.chargebee.com/#{@options.api_path}#{url_suffix}"
+    token = :base64.encode("#{api_key()}:")
     body =  process_request_body(params)
+
     headers = [
       {"Authorization" ,  "Basic #{token}"},
       {"Accept",  "application/json"},
@@ -23,7 +20,6 @@ defmodule ChargeBee.Endpoint do
           Map.put(parsed_data, "http_status_code", status_code)
 
         {:error, reason} ->
-          IO.inspect reason
           reason
       end
 
@@ -38,5 +34,9 @@ defmodule ChargeBee.Endpoint do
 
     {:form, body}
   end
+
+  defp api_key, do: Application.fetch_env!(:ex_chargebee, :api_key)
+
+  defp site, do: Application.fetch_env!(:ex_chargebee, :site)
 
 end
