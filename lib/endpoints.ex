@@ -1,5 +1,4 @@
 defmodule ChargeBee.Endpoint do
-  use HTTPoison.Base
   @options %{ protocol: "https", host_suffix: ".chargebee.com", api_path: "api/v2", timeout: 40_000, version: 'v2.4.7', port: 443}
 
   @api_key Application.get_env(:ex_chargebee, :api_key)
@@ -11,7 +10,6 @@ defmodule ChargeBee.Endpoint do
     url = "https://#{@site}.chargebee.com/#{@options.api_path}#{url_suffix}"
     token = :base64.encode("#{@api_key}:")
     body =  process_request_body(params)
-    
     headers = [
       {"Authorization" ,  "Basic #{token}"},
       {"Accept",  "application/json"},
@@ -30,6 +28,15 @@ defmodule ChargeBee.Endpoint do
       end
 
     if result["http_status_code"] != 200, do: {:error, result}, else: {:ok, result}
+  end
+
+  defp process_request_body(params) do
+    body =
+      params
+      |> ChargeBee.Utils.to_string_map()
+      |> Map.to_list()
+
+    {:form, body}
   end
 
 end

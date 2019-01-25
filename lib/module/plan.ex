@@ -11,6 +11,8 @@ defmodule ChargeBee.Module.Plan do
     |> Endpoint.request(@url_suffix, :post)
   end
 
+  def create(_), do: {:error, %{reason: "invalid plan parameters"}}
+
   def retrieve(plan_id) when is_binary(plan_id), do: Endpoint.request([], "#{@url_suffix}/#{plan_id}", :get)
   def retrieve(_), do: {:error, %{reason: "invalid plan_id"}}
 

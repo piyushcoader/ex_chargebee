@@ -12,4 +12,24 @@ defmodule ChargeBee.Utils do
       end
     end
   end
+
+  def to_string_map(map) do
+    for {k, v} <- map, into: %{} do
+      cond do
+        is_binary(k) ->
+          value = if is_map(v), do: to_string_map(v), else: v
+          {k, value}
+
+        true ->
+          value = if is_map(v), do: to_string_map(v), else: v
+          {Atom.to_string(k), value}
+      end
+    end
+  end
+
+  def random_string(length \\ 16) do
+    :crypto.strong_rand_bytes(length) 
+    |> Base.url_encode64
+    |> binary_part(0, length)
+  end
 end
