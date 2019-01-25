@@ -1,9 +1,9 @@
-defmodule ChargeBee.Module.Subscription do
+defmodule ChargeBee.Subscription do
   alias ChargeBee.Endpoint
   alias ChargeBee.Utils
   @url_suffix "/subscriptions"
 
-  def fetch_all(), do: Endpoint.request([], @url_suffix, :get)
+  def list(params \\ %{}), do: Endpoint.request(params, @url_suffix, :get)
 
   def create(params) when is_map(params) do
     Utils.string_map_to_atom(params)

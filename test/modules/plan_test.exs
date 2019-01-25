@@ -4,7 +4,7 @@ defmodule ChargeBee.PlanTest do
 
   @valid_plan %{id: ChargeBee.Utils.random_string(16), name: ChargeBee.Utils.random_string(16), invoice_name: "test_plan_new", price: "1000"}
 
-  alias ChargeBee.Module.Plan
+  alias ChargeBee.Plan
 
   setup %{} do
     sample_plan = %{id: ChargeBee.Utils.random_string(16), name: ChargeBee.Utils.random_string(16), invoice_name: "test_plan_sample", price: "5000"}
@@ -49,6 +49,6 @@ defmodule ChargeBee.PlanTest do
       assert {:error, plan_delete_error} = Plan.delete("invalid-plan-id")
       assert plan_delete_error["http_status_code"] == 404
     end
-    
+
   end
 end

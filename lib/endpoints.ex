@@ -1,9 +1,10 @@
 defmodule ChargeBee.Endpoint do
   @options %{ protocol: "https", host_suffix: ".chargebee.com", api_path: "api/v2", timeout: 40_000, version: 'v2.4.7', port: 443}
 
-  def request(params \\ [] , url_suffix ,  method \\ :post) do
 
-    url = "https://#{site()}.chargebee.com/#{@options.api_path}#{url_suffix}"
+  def request(params \\ [] , url_suffix ,  method \\ :post) do
+    url = get_url(method, url_suffix, params)
+
     token = :base64.encode("#{api_key()}:")
     body =  process_request_body(params)
 
@@ -35,8 +36,10 @@ defmodule ChargeBee.Endpoint do
     {:form, body}
   end
 
-  defp api_key, do: Application.fetch_env!(:ex_chargebee, :api_key)
+  defp get_url(:post, url_suffix, _params) when is_binary(url_suffix), do: "https://#{site()}.chargebee.com/#{@options.api_path}#{url_suffix}"
+  defp get_url(:get, url_suffix, params ) when is_binary(url_suffix), do: "https://#{site()}.chargebee.com/#{@options.api_path}#{url_suffix}?" <> URI.encode_query(params)
 
+  defp api_key, do: Application.fetch_env!(:ex_chargebee, :api_key)
   defp site, do: Application.fetch_env!(:ex_chargebee, :site)
 
 end
