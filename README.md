@@ -1,4 +1,4 @@
-# ChargeBee
+# ChargeBee [depreciated]
 
-** Project migrated to :** [https://github.com/piyushthapa/ex_chargebee]
+Use this for new releases : [https://github.com/piyushthapa/ex_chargebee]
 
